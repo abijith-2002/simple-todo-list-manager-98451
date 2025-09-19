@@ -1,0 +1,157 @@
+:root {
+  /* Colors from design system */
+  --color-0f0f0f: #0f0f0f;
+  --color-1a1a1a: #1a1a1a;
+  --color-2a2a2a: #2a2a2a;
+  --color-ffffff: #ffffff;
+  --color-bb86fc: #bb86fc;
+  --color-000000: #000000;
+  --color-696969: #696969;
+  --color-0d0714: #0d0714;
+  --color-1d1825: #1d1825;
+  --color-15101c: #15101c;
+  --color-9e78cf: #9e78cf;
+  --color-78cfb0: #78cfb0;
+  --color-777777: #777777;
+  --color-3e1671: #3e1671;
+
+  /* Typography tokens */
+  --typo-0-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  --typo-0-size: 24px;
+  --typo-0-weight: 400;
+  --typo-0-line: 29.045454px;
+  --typo-0-letter: 0px;
+  --typo-0-align: left;
+
+  --typo-1-family: var(--typo-0-family);
+  --typo-1-size: 12px;
+  --typo-1-weight: 400;
+  --typo-1-line: 14.522727px;
+  --typo-1-letter: 0px;
+  --typo-1-align: left;
+
+  --typo-2-family: var(--typo-0-family);
+  --typo-2-size: 16px;
+  --typo-2-weight: 700;
+  --typo-2-line: 19.363636px;
+  --typo-2-letter: 0px;
+  --typo-2-align: left;
+
+  --typo-3-family: var(--typo-0-family);
+  --typo-3-size: 16px;
+  --typo-3-weight: 400;
+  --typo-3-line: 19.363636px;
+  --typo-3-letter: 0px;
+  --typo-3-align: left;
+
+  --typo-4-family: var(--typo-0-family);
+  --typo-4-size: 24px;
+  --typo-4-weight: 400;
+  --typo-4-line: 29.045454px;
+  --typo-4-letter: 0px;
+  --typo-4-align: left;
+  --typo-4-color: var(--color-ffffff);
+
+  --typo-5-family: var(--typo-0-family);
+  --typo-5-size: 12px;
+  --typo-5-weight: 400;
+  --typo-5-line: 14.522727px;
+  --typo-5-letter: 0px;
+  --typo-5-align: left;
+  --typo-5-color: var(--color-ffffff);
+
+  --typo-6-family: var(--typo-0-family);
+  --typo-6-size: 16px;
+  --typo-6-weight: 700;
+  --typo-6-line: 19.363636px;
+  --typo-6-letter: 0px;
+  --typo-6-align: left;
+  --typo-6-color: var(--color-ffffff);
+
+  --typo-7-color: var(--color-9e78cf);
+  --typo-8-color: var(--color-78cfb0);
+  --typo-9-color: var(--color-ffffff);
+  --typo-10-color: var(--color-777777);
+
+  /* Spacing tokens (subset used) */
+  --space-4-622: 4.622222px;
+  --space-6-755: 6.755556px;
+  --space-8: 8px;
+  --space-10-360: 10.360703px;
+  --space-11: 11px;
+  --space-12-375: 12.375923px;
+  --space-16: 16px;
+  --space-17: 17px;
+  --space-17-142: 17.142857px;
+  --space-17-733: 17.733334px;
+  --space-22: 22px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-31: 31px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-64: 64px;
+  --space-67: 67px;
+  --space-70: 70px;
+  --space-74: 74px;
+  --space-95: 95px;
+  --space-98: 98px;
+  --space-293: 293px;
+  --space-525: 525px;
+  --space-540: 540px;
+  --space-960: 960px;
+
+  /* Border radius tokens */
+  --radius-5: 5px;
+  --radius-10: 10px;
+  --radius-20: 20px;
+  --radius-25: 25px;
+}
+
+/* Base resets and defaults */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--color-0f0f0f);
+  font-family: var(--typo-0-family);
+  color: var(--color-ffffff);
+}
+
+img { display: block; max-width: 100%; }
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden; clip: rect(1px,1px,1px,1px);
+  white-space: nowrap;
+  border: 0; padding: 0; margin: -1px;
+}
+
+/* Styles mapped from design system styles */
+.style-0-bg { background: var(--color-0f0f0f); }
+.style-1-bg {
+  background: var(--color-1a1a1a);
+  border: 1px solid var(--color-2a2a2a);
+}
+.style-2-bg { background: var(--color-ffffff); }
+.style-3-bg {
+  background: var(--color-bb86fc);
+  border-radius: var(--radius-25);
+}
+.style-4-bg { background: var(--color-000000); }
+.style-5-bg {
+  background: var(--color-1a1a1a);
+  border: 1px solid var(--color-2a2a2a);
+  border-radius: var(--radius-25);
+}
+.style-6-stroke {
+  border: 2px solid var(--color-bb86fc);
+  border-radius: 50%;
+}
+.style-7-bg { background: var(--color-696969); }
+.style-8-bg { background: var(--color-bb86fc); }
+.style-9-stroke { border: 1px solid var(--color-000000); }

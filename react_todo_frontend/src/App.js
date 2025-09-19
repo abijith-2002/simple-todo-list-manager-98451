@@ -3,18 +3,12 @@ import './App.css';
 
 /**
  * PUBLIC_INTERFACE
- * App - Main Todo application component with Ocean Professional theme.
- * Features:
- * - Create, read, update, delete todos
- * - Toggle complete/incomplete
- * - Filter: all/active/completed
- * - Local state with persistence in localStorage
- * - Accessible controls and keyboard-friendly interactions
+ * App - Todo application styled to match the extracted Figma design.
+ * - Keeps full CRUD interactions, filters and persistence
+ * - Applies dark themed layout, header, and add button per static assets
  */
 function App() {
-  const [theme, setTheme] = useState('light');
   const [todos, setTodos] = useState(() => {
-    // Initialize from localStorage to persist across refreshes
     try {
       const saved = localStorage.getItem('todos');
       return saved ? JSON.parse(saved) : [];
@@ -27,17 +21,11 @@ function App() {
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState('');
 
-  // Apply theme to document (light only for now to match Ocean Professional; keep toggle for future)
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // Persist todos on change
   useEffect(() => {
     try {
       localStorage.setItem('todos', JSON.stringify(todos));
     } catch {
-      // ignore storage errors
+      // ignore
     }
   }, [todos]);
 
@@ -48,30 +36,17 @@ function App() {
 
   const filteredTodos = useMemo(() => {
     switch (filter) {
-      case 'active':
-        return todos.filter(t => !t.completed);
-      case 'completed':
-        return todos.filter(t => t.completed);
-      default:
-        return todos;
+      case 'active': return todos.filter(t => !t.completed);
+      case 'completed': return todos.filter(t => t.completed);
+      default: return todos;
     }
   }, [todos, filter]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
-  };
 
   // PUBLIC_INTERFACE
   const addTodo = () => {
     const title = input.trim();
     if (!title) return;
-    const newTodo = {
-      id: cryptoRandomId(),
-      title,
-      completed: false,
-      createdAt: Date.now(),
-    };
+    const newTodo = { id: cryptoRandomId(), title, completed: false, createdAt: Date.now() };
     setTodos(prev => [newTodo, ...prev]);
     setInput('');
   };
@@ -79,17 +54,12 @@ function App() {
   // PUBLIC_INTERFACE
   const deleteTodo = (id) => {
     setTodos(prev => prev.filter(t => t.id !== id));
-    if (editingId === id) {
-      setEditingId(null);
-      setEditingText('');
-    }
+    if (editingId === id) { setEditingId(null); setEditingText(''); }
   };
 
   // PUBLIC_INTERFACE
   const toggleTodo = (id) => {
-    setTodos(prev =>
-      prev.map(t => (t.id === id ? { ...t, completed: !t.completed } : t))
-    );
+    setTodos(prev => prev.map(t => (t.id === id ? { ...t, completed: !t.completed } : t)));
   };
 
   // PUBLIC_INTERFACE
@@ -107,61 +77,53 @@ function App() {
   // PUBLIC_INTERFACE
   const saveEditing = (id) => {
     const text = editingText.trim();
-    if (!text) {
-      // if empty after trim, delete the todo for convenience
-      deleteTodo(id);
-      return;
-    }
+    if (!text) { deleteTodo(id); return; }
     setTodos(prev => prev.map(t => (t.id === id ? { ...t, title: text } : t)));
     setEditingId(null);
     setEditingText('');
   };
 
   // PUBLIC_INTERFACE
-  const clearCompleted = () => {
-    setTodos(prev => prev.filter(t => !t.completed));
-  };
+  const clearCompleted = () => setTodos(prev => prev.filter(t => !t.completed));
 
-  // PUBLIC_INTERFACE
   const setFilterAll = () => setFilter('all');
-
-  // PUBLIC_INTERFACE
   const setFilterActive = () => setFilter('active');
-
-  // PUBLIC_INTERFACE
   const setFilterCompleted = () => setFilter('completed');
 
-  // Keyboard handlers
-  const handleAddKeyDown = (e) => {
-    if (e.key === 'Enter') addTodo();
-  };
+  const handleAddKeyDown = (e) => { if (e.key === 'Enter') addTodo(); };
   const handleEditKeyDown = (e, id) => {
     if (e.key === 'Enter') saveEditing(id);
     if (e.key === 'Escape') cancelEditing();
   };
 
-  return (
-    <div className="ocean-app">
-      <div className="ocean-header">
-        <div className="brand">
-          <span aria-hidden="true" className="brand-bubble" />
-          <h1 className="brand-title">Todo</h1>
-          <span className="brand-accent">• Ocean</span>
-        </div>
-        <button
-          className="theme-switch"
-          onClick={toggleTheme}
-          type="button"
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
-          title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
-        >
-          {theme === 'light' ? '🌙' : '☀️'}
-        </button>
-      </div>
+  const completedCount = todos.filter(t => t.completed).length;
 
-      <main className="ocean-container" role="main">
-        {/* Input area */}
-        <div className="input-row">
+  return (
+    <div className="app">
+      {/* Header to match Figma header block */}
+      <header className="header" role="banner" aria-label="Header">
+        <div className="header-inner">
+          <div className="header-title" role="group" aria-label="Title and status">
+            <h1>Tasks</h1>
+            <div className="header-sub">{completedCount} of {todos.length || 0} completed</div>
+          </div>
+          {/* Add button mirrors purple rounded square with plus */}
+          <button
+            className="add-btn"
+            type="button"
+            aria-label="Add task"
+            title="Add task"
+            onClick={addTodo}
+            disabled={!input.trim()}
+          >
+            <span className="plus" aria-hidden="true" />
+          </button>
+        </div>
+      </header>
+
+      <main className="main" role="main">
+        {/* Input row (dark theme) */}
+        <div className="input-row" style={{ marginTop: 16 }}>
           <input
             type="text"
             className="input"
@@ -173,7 +135,7 @@ function App() {
             autoFocus
           />
           <button
-            className="btn btn-primary"
+            className="btn-primary"
             type="button"
             onClick={addTodo}
             disabled={!input.trim()}
@@ -184,20 +146,8 @@ function App() {
           </button>
         </div>
 
-        {/* List */}
+        {/* Tasks list as dark cards */}
         <ul className="todo-list" aria-live="polite">
-          {filteredTodos.length === 0 && (
-            <li className="empty">
-              <span className="empty-emoji" role="img" aria-label="waves">🌊</span>
-              <div className="empty-text">
-                {todos.length === 0
-                  ? 'Your list is clear. Add something to get started!'
-                  : filter === 'active'
-                  ? 'All caught up! No active tasks.'
-                  : 'No completed tasks yet.'}
-              </div>
-            </li>
-          )}
           {filteredTodos.map((todo) => (
             <li key={todo.id} className={`todo-item ${todo.completed ? 'done' : ''}`}>
               <label className="checkbox-wrap">
@@ -212,7 +162,8 @@ function App() {
 
               {editingId === todo.id ? (
                 <input
-                  className="edit-input"
+                  className="input"
+                  style={{ padding: '10px 12px', borderRadius: 12 }}
                   value={editingText}
                   onChange={(e) => setEditingText(e.target.value)}
                   onKeyDown={(e) => handleEditKeyDown(e, todo.id)}
@@ -233,7 +184,7 @@ function App() {
                 {editingId === todo.id ? (
                   <>
                     <button
-                      className="btn btn-ghost"
+                      className="btn-ghost"
                       onMouseDown={(e) => e.preventDefault()}
                       onClick={() => saveEditing(todo.id)}
                       title="Save"
@@ -241,7 +192,7 @@ function App() {
                       Save
                     </button>
                     <button
-                      className="btn btn-ghost danger"
+                      className="btn-ghost danger"
                       onMouseDown={(e) => e.preventDefault()}
                       onClick={cancelEditing}
                       title="Cancel"
@@ -252,14 +203,14 @@ function App() {
                 ) : (
                   <>
                     <button
-                      className="btn btn-ghost"
+                      className="btn-ghost"
                       onClick={() => startEditing(todo.id, todo.title)}
                       title="Edit"
                     >
                       Edit
                     </button>
                     <button
-                      className="btn btn-ghost danger"
+                      className="btn-ghost danger"
                       onClick={() => deleteTodo(todo.id)}
                       title="Delete"
                       aria-label="Delete task"
@@ -276,7 +227,6 @@ function App() {
         {/* Footer / Filters */}
         <div className="footer">
           <div className="status">
-            <span className="dot" aria-hidden="true" />
             {remainingCount} {remainingCount === 1 ? 'task' : 'tasks'} left
           </div>
           <div className="filters" role="tablist" aria-label="Todo filters">
@@ -306,7 +256,7 @@ function App() {
             </button>
           </div>
           <button
-            className="btn btn-quiet"
+            className="btn-ghost"
             onClick={clearCompleted}
             disabled={!todos.some(t => t.completed)}
             title="Clear completed tasks"
@@ -316,10 +266,8 @@ function App() {
         </div>
       </main>
 
-      <footer className="ocean-footer">
-        <span className="note">
-          Built with the Ocean Professional theme
-        </span>
+      <footer className="app-footer">
+        <span className="note">Figma dark design applied</span>
       </footer>
     </div>
   );
